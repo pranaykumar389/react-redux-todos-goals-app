@@ -7,7 +7,7 @@ function todos(state = [], action) {
     return state;
 }
 
-function createStore() {
+function createStore(reducer) {
     let state;
     let listeners = [];
 
@@ -20,8 +20,24 @@ function createStore() {
         }
     }
 
+    const dispatch = (action) => {
+        state = reducer(state, action);
+        listeners.forEach(listener => listener());
+    };
+
     return {
         getState,
-        subscribe
+        subscribe,
+        dispatch
     }
 };
+
+const store = createStore(todos);
+store.dispatch({
+    type : 'ADD_TODO',
+    todo : {
+        id : 0,
+        name : 'Redux',
+        complete: false
+    }
+});
