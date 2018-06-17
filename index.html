@@ -248,10 +248,32 @@
         }
 
         class Todos extends React.Component {
+
+            addItem = (e) => {
+                e.preventDefault();
+                const name = this.input.value;
+                this.input.value = '';
+
+                this.props.store.dispatch(addTodoAction({
+                    id: generateId(),
+                    name,
+                    complete: false
+                }))
+            }
+
             render() {
                 return(
                     <div>
-                        TODOS
+                        <h1>TODOS List</h1>
+                        <input 
+                            type='text'
+                            placeholder='Add Todo'
+                            ref={(input) => this.input = input}
+                        />
+
+                        <button onClick={this.addItem}>
+                            Add Todo
+                        </button>
 
                         <List />
                     </div>
@@ -276,14 +298,14 @@
                 return (
                 <div>
                     REACT APP
-                    <Todos />
+                    <Todos store={this.props.store} />
                     <Goals />
                 </div>
                 )
             }
         }
         ReactDOM.render(
-            <App />,
+            <App store={store} />,
             document.getElementById('app')
         )
     </script>
